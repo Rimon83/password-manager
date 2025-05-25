@@ -96,23 +96,26 @@ def handle_add_button():
 
 
 def handle_search():
+    valid = False
+    file_data = []
     website_input = website_entry.get().title()
     with open(resource_path("password.txt")) as file:
         for line in file:
             credentials_auth = [auth for auth in line.strip().split(" | ")]
+            website_name = credentials_auth[0]
+            if website_input == website_name:
+                file_data = credentials_auth
+                valid = True
 
-        website_name = credentials_auth[0]
-
-        if website_name != website_input:
-            messagebox.showwarning(title="Oops", message="The website does not match with "
-                                                         "stored data")
+        if not valid:
+            messagebox.showwarning(title="Oops",
+                                   message="The website does not match with "                                                  "stored data")
             return
 
-        if website_name == website_input:
-            website_entry.set_entry(credentials_auth[0])
-            email_entry.set_entry((credentials_auth[1]))
-            password_entry.set_entry(credentials_auth[2])
-            add_button.edit_text_button("Update")
+        website_entry.set_entry(file_data[0])
+        email_entry.set_entry((file_data[1]))
+        password_entry.set_entry(file_data[2])
+        add_button.edit_text_button("Update")
 
 
 # handle delete one line from file
@@ -170,8 +173,6 @@ def create_text(display_frame):
         total_label.set_label(f"There is no data to list")
 
 
-
-
 window = tkinter.Tk()
 window.title("Password Manager")
 window.config(padx=50, pady=50, bg=YELLOW)
@@ -225,7 +226,8 @@ main_frame.pack(pady=30)
 frame_title = tkinter.Frame(window, bg=YELLOW)
 data_label = LabelComponent(frame_title, text="Your credential list:", font=("Arial", 12, "bold"),
                             row=0, column=0, bg=YELLOW)
-total_label = LabelComponent(frame_title, text="Total:", font=("Arial", 10, "bold"), row=1, column=0, bg=YELLOW, fg="gray")
+total_label = LabelComponent(frame_title, text="Total:", font=("Arial", 10, "bold"), row=1, column=0, bg=YELLOW,
+                             fg="gray")
 frame_title.pack(pady=20)
 
 frame_display = tkinter.Frame(window)

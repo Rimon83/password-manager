@@ -34,6 +34,7 @@ class FileHandle:
             with open(self.file_name, "r") as file:
                 # convert file into array for each line
                 lines = [line.strip() for line in file]
+                print(lines)
 
                 # check if line that need to be updated is exists if so, get the index of this
                 # line in array
@@ -45,7 +46,7 @@ class FileHandle:
                         # write data into file
                         with open(self.file_name, "w") as file:
                             for new_line in lines:
-                                file.write(f"{new_line}")
+                                file.write(f"{new_line}\n")
                         print("The information is updated successfully")
                         status = True
                 if not status:
